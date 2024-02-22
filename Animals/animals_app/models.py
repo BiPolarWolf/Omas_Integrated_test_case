@@ -1,31 +1,45 @@
-from enum import unique
-from operator import index
-from tabnanny import verbose
 from django.db import models
 from django.utils import formats,timezone
 # Create your models here.
 
+
+
 class AnimalType(models.Model):
-    animal_type = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Тип'
+        verbose_name_plural = 'Типы'
 
 
-class Breed(AnimalType):
-    animal_breed = models.CharField(max_length=100)
+class Breed(models.Model):
+    name = models.CharField(max_length=100,unique=True)
+    type = models.ForeignKey(AnimalType, on_delete=models.CASCADE)
 
- 
+    def __str__(self):
+        return f'{self.type.name} породы {self.name}'
 
-class Animal(Breed):
+
+    class Meta:
+        verbose_name = 'Порода'
+        verbose_name_plural = 'Породы'
+
+
+class Animal(models.Model):
 
     class Sex(models.TextChoices):
         MALE = 'M', 'Мужской'
         FEMALE = 'W', 'Женский'
 
-
+    breed = models.ForeignKey(Breed,on_delete=models.SET_NULL,null=True)
     inventory_number = models.CharField(max_length=20, unique=True)
     sex = models.CharField(max_length=1,choices=Sex.choices,default=Sex.FEMALE)
     nickname = models.CharField(max_length=50)
     date_arrival = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey('self',on_delete=models.CASCADE,blank=True,null=True)
+    parent = models.ForeignKey('self',on_delete=models.SET_NULL,blank=True,null=True)
 
     @property
     def is_in_months(self):
@@ -35,6 +49,10 @@ class Animal(Breed):
     class Meta:
         ordering = ['date_arrival','nickname']
         indexes = [models.Index(fields=['date_arrival','nickname']),]
+        verbose_name = 'Животное'
+        verbose_name_plural = 'Животные'
+    def __str__(self):
+        return self.nickname
 
 
 
@@ -46,7 +64,14 @@ class Weighting(models.Model):
     class Meta:
         ordering = ['-weighting_date']
         indexes = [models.Index(fields=['weight_kg']),]
+        constraints = [
+            models.UniqueConstraint(fields=['weighting_date', 'animal'], name='unique_weighting_per_animal_per_day'),
+        ]
+    def __str__(self):
+        return f'{self.weighting_date} - {self.animal.nickname}'
 
 
-
+    class Meta:
+        verbose_name = 'Взвешивание'
+        verbose_name_plural = 'Взвешивания'
 

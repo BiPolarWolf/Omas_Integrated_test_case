@@ -30,6 +30,7 @@ router = routers.SimpleRouter()
 router.register(r'animals', views.AnimalsViewSet)
 router.register(r'breed',views.BreedViewSet)
 router.register(r'animal_types',views.AnimalTypeViewSet)
+router.register(r'weightings',views.WeightingViewSet)
 
 
 schema_view = get_schema_view(
@@ -65,5 +66,5 @@ urlpatterns = [
         schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'
     ),
-    path("api/", include(router.urls)),
+    path("api/", include(router.urls),),
 ]

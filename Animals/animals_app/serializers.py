@@ -7,12 +7,19 @@ from rest_framework.serializers import SerializerMethodField
 
 
 
+
 class AnimalSerializer(ModelSerializer):
     is_in_months = SerializerMethodField()
+    breed_info = SerializerMethodField()
 
     class Meta:
         model = models.Animal
-        fields = tuple("inventory_number,nickname,date_arrival,is_in_months,breed,sex,parent".split(','))
+        fields = tuple("inventory_number,nickname,date_arrival,is_in_months,breed_info,breed,sex,parent".split(','))
+
+
+    def get_breed_info(self,obj):
+        return obj.breed.__str__()
+
 
     def get_is_in_months(self,obj):
         current_time = timezone.now()
@@ -27,7 +34,6 @@ class AnimalSerializer(ModelSerializer):
         return representation
 
 
-
 class BreedSerializer(ModelSerializer):
     class Meta:
         model = models.Breed
@@ -40,3 +46,7 @@ class AnimalTypeSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class WeightingSerializer(ModelSerializer):
+    class Meta:
+        model = models.Weighting
+        fields = '__all__'

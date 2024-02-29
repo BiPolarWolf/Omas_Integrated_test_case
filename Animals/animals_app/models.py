@@ -21,7 +21,7 @@ class Breed(models.Model):
     type = models.ForeignKey(AnimalType, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.type.name} of breed {self.name}'
+        return f'{self.type.name} породы {self.name}'
 
 
     class Meta:

@@ -4,7 +4,21 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import *
 from .models import AnimalType,Animal,Breed,Weighting
 from .filters import AnimalFilter
+from rest_framework.parsers import JSONParser
+from rest_framework.exceptions import ParseError
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 
+class CustomJSONParser(JSONParser):
+    """
+    Пользовательский парсер, который обрабатывает только JSON данные.
+    Если данные не являются JSON, выбрасывается исключение ParseError.
+    """
+    def parse(self, stream, media_type=None, parser_context=None):
+        try:
+            return super().parse(stream, media_type, parser_context)
+        except ParseError as exc:
+            raise ParseError("Данные запроса должны быть в формате JSON.")
 
 
 # -*- coding: utf-8 -*-
@@ -16,15 +30,7 @@ class AnimalsViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = AnimalFilter
 
-    # def list(self, request, *args, **kwargs):
-    #     # Логирование параметров запроса
-    #     self.log_request_params(request)
-    #     return super().list(request, *args, **kwargs)
-    
-    # def log_request_params(self, request):
-    #     query_params = request.query_params
-    #     # Запись параметров запроса в лог
-    #     print(f"Query params: {query_params}")
+    parser_classes = [CustomJSONParser]
 
 class BreedViewSet(ModelViewSet):
     queryset = Breed.objects.all()
@@ -36,6 +42,12 @@ class AnimalTypeViewSet(ModelViewSet):
     serializer_class = AnimalTypeSerializer
 
 
+    parser_classes = [CustomJSONParser]
+
+
 class WeightingViewSet(ModelViewSet):
     queryset = Weighting.objects.all()
     serializer_class = WeightingSerializer
+
+
+    parser_classes = [CustomJSONParser]

@@ -1,4 +1,5 @@
 
+from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import *
@@ -51,3 +52,13 @@ class WeightingViewSet(ModelViewSet):
 
 
     parser_classes = [CustomJSONParser]
+
+
+def list_animals(request):
+    animals = Animal.objects.all()
+    return render(request,'animals/animals_list.html',{'animals':animals})
+
+
+def animals_breed(request,id):
+    animals = Animal.objects.filter(breed = id)
+    return render(request,'animals/animals_list.html',{'animals':animals})

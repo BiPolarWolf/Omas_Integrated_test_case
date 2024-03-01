@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Животные{% endblock %}
+
+
+{% block content %}
+{% for animal in animals %}
+<div class="animal">
+    <p>{{animal.nickname}}</p>
+    <p>{{animal.breed}}</p>
+    <p>{{animal.date_arrival}}</p>
+    <p>{{animal.sex}}</p>
+    {% if animal.parent %}
+    <p>{{animal.parent}}</p>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

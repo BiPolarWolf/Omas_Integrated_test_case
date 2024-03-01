@@ -1,0 +1,11 @@
+.container{
+    width: 1000px;
+    margin: auto;
+}
+
+.animal{
+    margin: 2em;
+    border: 1px solid black;
+    padding:1em;
+}
+

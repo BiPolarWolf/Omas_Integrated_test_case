@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 from django.utils import formats,timezone
 from django.core.exceptions import ValidationError
@@ -28,6 +29,8 @@ class Breed(models.Model):
         verbose_name = 'Порода'
         verbose_name_plural = 'Породы'
 
+    def get_absolute_url(self):
+        return reverse('animals:breed',kwargs={'id':self.id})
 
 class Animal(models.Model):
 
@@ -63,6 +66,8 @@ class Animal(models.Model):
 
             if self.parent.sex != self.sex:
                 raise ValidationError('Родителем может быть только женского пола')
+
+    
 
 
 

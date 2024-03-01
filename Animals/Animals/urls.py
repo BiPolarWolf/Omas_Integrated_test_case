@@ -67,4 +67,5 @@ urlpatterns = [
         name='schema-redoc'
     ),
     path("api/", include(router.urls),),
+    path('',include('animals_app.urls',namespace='animals'))
 ]

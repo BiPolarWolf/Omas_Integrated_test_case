@@ -51,7 +51,7 @@ class Animal(models.Model):
         return months
 
     class Meta:
-        ordering = ['date_arrival','nickname']
+        ordering = ['-date_arrival','nickname']
         indexes = [models.Index(fields=['date_arrival','nickname']),]
         verbose_name = 'Животное'
         verbose_name_plural = 'Животные'

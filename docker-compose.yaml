@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./Animals
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - frontend
+    volumes:
+      - ./Animals:/code
+
+  frontend:
+    build:
+      context: ./omas_front
+    command: npm start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./omas_front:/app

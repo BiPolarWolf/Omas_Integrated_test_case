@@ -83,7 +83,7 @@ function AddAnimal() {
               <Field type="text" name="inventory_number" as={InputText} />
               <ErrorMessage className='text-error' name="inventory_number" component="div" />
             </div>
-            <div className='my-3'>
+            <div className='my-3'>авааы
               <label htmlFor="nickname">Кличка</label>
               <Field type="text" name="nickname" as={InputText} />
               <ErrorMessage className='text-error' name="nickname" component="div" />
